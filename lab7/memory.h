@@ -26,8 +26,13 @@ private:
     std::vector<Page> pages;
 };
 
-// Функция для измерения времени выполнения
 template <typename Func>
-double measure_time(Func func);
+double measure_time(Func func) {
+    auto start = std::chrono::high_resolution_clock::now();
+    func();
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> duration = end - start;
+    return duration.count();
+}
 
 #endif // MEMORY_MANAGER_H

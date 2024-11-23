@@ -52,13 +52,3 @@ void MemoryManager::read_memory(void* address, void* data, size_t size) {
         std::cerr << "Error: Data size exceeds page size." << std::endl;
     }
 }
-
-// Функция для измерения времени выполнения
-template <typename Func>
-double measure_time(Func func) {
-    auto start = std::chrono::high_resolution_clock::now();
-    func();
-    auto end = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double> duration = end - start;
-    return duration.count();
-}

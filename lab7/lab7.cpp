@@ -3,7 +3,7 @@
 
 int main()
 {
-    const size_t total_pages = 1000;
+    const size_t total_pages = 10;
     MemoryManager manager(total_pages);
 
     // Эксперимент 1: Время выделения памяти
