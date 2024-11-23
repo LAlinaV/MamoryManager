@@ -3,6 +3,7 @@
 
 int main()
 {
+    /*
     const size_t total_pages = 10;
     MemoryManager manager(total_pages);
 
@@ -53,6 +54,7 @@ int main()
         std::cout << time << " ";
     }
     std::cout << std::endl;
+    */
 
     return 0;
 }

@@ -2,6 +2,7 @@
 
 MemoryManager::MemoryManager(size_t total_pages) {
     pages.reserve(total_pages);
+    freePagesCount = total_pages;
     for (size_t i = 0; i < total_pages; i++) {
         Page new_page;
         new_page.address = malloc(PAGE_SIZE);
@@ -16,22 +17,28 @@ MemoryManager::~MemoryManager() {
     }
 }
 
-void* MemoryManager::allocate_memory() {
-    for (auto& page : pages) {
-        if (page.is_free) {
-            page.is_free = false;
-            return page.address;
+void MemoryManager::allocate_memory(Process process) {
+    size_t processSize = sizeof(process);
+    int processPagesCount = std::ceil((double)processSize / PAGE_SIZE);
+
+    if (freePagesCount >= processPagesCount) {
+        int pagesFilled = 0;
+        for (auto& page : pages) {
+            if (page.is_free) {
+                page.is_free = false;
+                std::memcpy(page.address, &process + pagesFilled * PAGE_SIZE, PAGE_SIZE);
+                pagesForProcess[process.id].push_back(page);
+                pagesFilled++;
+            }
         }
     }
-    return nullptr;  // Если свободных страниц нет
 }
 
-void MemoryManager::free_memory(void* address) {
-    for (auto& page : pages) {
-        if (page.address == address) {
-            page.is_free = true;
-            return;
-        }
+void MemoryManager::free_memory(Process process) {
+    std::vector<Page> processPages = pagesForProcess[process.id];
+    for (auto& page : processPages) {
+        free(page.address);
+        page.is_free = true;
     }
 }
 
