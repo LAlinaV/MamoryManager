@@ -44,20 +44,21 @@ void MemoryManager::free_memory(Process process) {
     }
 }
 
-void MemoryManager::write_memory(void* address, const void* data, size_t size) {
-    if (size <= PAGE_SIZE) {
-        memcpy(address, data, size);
+void MemoryManager::read_memory(void* address, void* data, size_t size) {
+    if (address == nullptr || data == nullptr || size > PAGE_SIZE) {
+        std::cerr << "Error: Data size exceeds page size." << std::endl;
     }
     else {
-        std::cerr << "Error: Data size exceeds page size." << std::endl;
+        memcpy(data, address, size);
     }
 }
 
-void MemoryManager::read_memory(void* address, void* data, size_t size) {
-    if (size <= PAGE_SIZE) {
-        memcpy(data, address, size);
-    }
-    else {
+void MemoryManager::write_memory(void* address, const void* data, size_t size) {
+    if (address == nullptr || data == nullptr || size > PAGE_SIZE) {
         std::cerr << "Error: Data size exceeds page size." << std::endl;
     }
+    else {
+        memcpy(address, data, size);
+    }
 }
+
