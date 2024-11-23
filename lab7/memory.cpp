@@ -29,6 +29,7 @@ void MemoryManager::allocate_memory(Process process) {
                 std::memcpy(page.address, &process + pagesFilled * PAGE_SIZE, PAGE_SIZE);
                 pagesForProcess[process.id].push_back(page);
                 pagesFilled++;
+                freePagesCount--;
             }
         }
     }
@@ -39,6 +40,7 @@ void MemoryManager::free_memory(Process process) {
     for (auto& page : processPages) {
         free(page.address);
         page.is_free = true;
+        freePagesCount++;
     }
 }
 
