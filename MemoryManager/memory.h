@@ -6,6 +6,7 @@
 #include <string>
 #include <chrono>
 #include <unordered_map>
+#include <queue>
 
 #define PAGE_SIZE 4096  
 
@@ -24,12 +25,13 @@ public:
     MemoryManager(size_t total_pages);
     ~MemoryManager();
     void allocate_memory(Process process);
-    void free_memory(int processId);
+    std::vector<int> free_memory();
     void write_memory(void* address, const void* data, size_t size);
     void read_memory(void* address, void* data, size_t size);
     std::unordered_map<int, std::vector<int>> getPages();
 
 private:
+    std::queue<Process> q;
     std::unordered_map<int, std::vector<int>> pagesForProcess;
     std::vector<Page> pages;
     int freePagesCount;

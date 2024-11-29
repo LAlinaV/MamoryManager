@@ -54,16 +54,22 @@ void MemoryManager::allocate_memory(Process process) {
                 }
             }
         }
+        
+        q.push(process);
     }
 }
 
-void MemoryManager::free_memory(int processId) {
-    std::vector<int> processPages = pagesForProcess[processId];
+std::vector<int> MemoryManager::free_memory() {
+    Process process = q.front();
+    q.pop();
+    std::vector<int> processPages = pagesForProcess[process.id];
     for (int i : processPages) {
-        free(pages[i].address);
         pages[i].is_free = true;
         freePagesCount++;
+        pagesForProcess.erase(process.id);
     }
+    
+    return processPages;
 }
 
 void MemoryManager::read_memory(void* address, void* data, size_t size) {

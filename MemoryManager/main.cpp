@@ -12,6 +12,7 @@
 #include <QMessageBox> 
 #include <QRandomGenerator> 
 #include <QTabWidget> 
+#include <QDebug>
 #include <cstring>
 #include <vector>
 #include "memory.h"
@@ -64,16 +65,16 @@ public:
         tabWidget->addTab(processTab, "Process Management"); 
  
         // Second tab for read/write operations 
-        QWidget *ioTab = new QWidget(this); 
-        QVBoxLayout *ioLayout = new QVBoxLayout(ioTab); 
+        //QWidget *ioTab = new QWidget(this); 
+        //QVBoxLayout *ioLayout = new QVBoxLayout(ioTab); 
  
-        QPushButton *readButton = new QPushButton("Read", this); 
-        QPushButton *writeButton = new QPushButton("Write", this); 
-        ioLayout->addWidget(readButton); 
-        ioLayout->addWidget(writeButton); 
+        //QPushButton *readButton = new QPushButton("Read", this); 
+        //QPushButton *writeButton = new QPushButton("Write", this); 
+        //ioLayout->addWidget(readButton); 
+        //ioLayout->addWidget(writeButton); 
  
-        ioTab->setLayout(ioLayout); 
-        tabWidget->addTab(ioTab, "Read/Write"); 
+        //ioTab->setLayout(ioLayout); 
+        //tabWidget->addTab(ioTab, "Read/Write"); 
  
         // Add the tab widget to the main layout 
         mainLayout->addWidget(tabWidget); 
@@ -93,8 +94,8 @@ public:
         // Connect buttons to their respective slots 
         connect(addButton, &QPushButton::clicked, this, &MainWindow::addProcess); 
         connect(removeButton, &QPushButton::clicked, this, &MainWindow::removeProcess); 
-        connect(readButton, &QPushButton::clicked, this, &MainWindow::readData); 
-        connect(writeButton, &QPushButton::clicked, this, &MainWindow::writeData); 
+        //connect(readButton, &QPushButton::clicked, this, &MainWindow::readData); 
+        //connect(writeButton, &QPushButton::clicked, this, &MainWindow::writeData); 
     } 
  
 private slots: 
@@ -133,8 +134,7 @@ private slots:
  
         if (idOk && id >= 0) { 
             
-            std::vector<int> processPages = manager.getPages()[id];
-            manager.free_memory(id);
+            std::vector<int> processPages = manager.free_memory();
             
             for (int i : processPages) { 
                 QGraphicsRectItem *rect =dynamic_cast<QGraphicsRectItem*>(scene->items().at(i)); 
