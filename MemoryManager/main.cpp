@@ -26,7 +26,7 @@ class MainWindow : public QMainWindow {
 
 public:
     MainWindow(QWidget *parent = nullptr) : QMainWindow(parent) {
-        QWidget *centralWidget = new QWidget(this);
+         QWidget *centralWidget = new QWidget(this);
         QVBoxLayout *mainLayout = new QVBoxLayout(centralWidget);
 
         // Create a tab widget
@@ -66,16 +66,37 @@ public:
         tabWidget->addTab(processTab, "Process Management");
 
         // Second tab for read/write operations
-        //QWidget *ioTab = new QWidget(this);
-        //QVBoxLayout *ioLayout = new QVBoxLayout(ioTab);
+        QWidget *ioTab = new QWidget(this);
+        QVBoxLayout *ioLayout = new QVBoxLayout(ioTab);
 
-        //QPushButton *readButton = new QPushButton("Read", this);
-        //QPushButton *writeButton = new QPushButton("Write", this);
-        //ioLayout->addWidget(readButton);
-        //ioLayout->addWidget(writeButton);
+        // Create the input field for process id
+        QHBoxLayout *ioProcessIdLayout = new QHBoxLayout();
+        QLabel *ioProcessIdLabel = new QLabel("Enter process id", this);
+        ioProcessIdInput = new QTextEdit(this);
+        ioProcessIdInput->setFixedHeight(30);
+        ioProcessIdInput->setFixedWidth(200);
+        ioProcessIdLayout->addWidget(ioProcessIdLabel);
+        ioProcessIdLayout->addWidget(ioProcessIdInput);
+        ioLayout->addLayout(ioProcessIdLayout);
 
-        //ioTab->setLayout(ioLayout);
-        //tabWidget->addTab(ioTab, "Read/Write");
+        // Create the input field for data
+        QHBoxLayout *ioDataLayout = new QHBoxLayout();
+        QLabel *ioDataLabel = new QLabel("Enter data", this);
+        ioDataInput = new QTextEdit(this);
+        ioDataInput->setFixedHeight(30);
+        ioDataInput->setFixedWidth(200);
+        ioDataLayout->addWidget(ioDataLabel);
+        ioDataLayout->addWidget(ioDataInput);
+        ioLayout->addLayout(ioDataLayout);
+
+        // Create buttons for read and write operations
+        QPushButton *readButton = new QPushButton("Read", this);
+        QPushButton *writeButton = new QPushButton("Write", this);
+        ioLayout->addWidget(readButton);
+        ioLayout->addWidget(writeButton);
+
+        ioTab->setLayout(ioLayout);
+        tabWidget->addTab(ioTab, "Read/Write");
 
         // Add the tab widget to the main layout
         mainLayout->addWidget(tabWidget);
@@ -95,8 +116,8 @@ public:
         // Connect buttons to their respective slots
         connect(addButton, &QPushButton::clicked, this, &MainWindow::addProcess);
         connect(removeButton, &QPushButton::clicked, this, &MainWindow::removeProcess);
-        //connect(readButton, &QPushButton::clicked, this, &MainWindow::readData);
-        //connect(writeButton, &QPushButton::clicked, this, &MainWindow::writeData);
+        connect(readButton, &QPushButton::clicked, this, &MainWindow::readData);
+        connect(writeButton, &QPushButton::clicked, this, &MainWindow::writeData);
     }
 
 private slots:
@@ -191,6 +212,8 @@ private slots:
 private:
     QTextEdit *processSizeInput;
     QTextEdit *processIdInput;
+    QTextEdit *ioProcessIdInput;
+    QTextEdit *ioDataInput;
     QGraphicsView *graphicsView;
     QGraphicsScene *scene;
     std::vector<QGraphicsRectItem*> rectangles; // Store the main rectangles
